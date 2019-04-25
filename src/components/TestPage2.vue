@@ -1,19 +1,23 @@
 <template>
   <div class="testPage">
-    HelloWorld
+    测试页面2
   </div>
 </template>
 <script>
 export default {
   name: 'TestPage',
   data () {
-    return {}
+    return {
+    }
   },
   mounted () {
   },
-  methods: {}
+  methods: {
+  }
 }
 </script>
 <style scoped lang="scss">
-  .testPage{}
+  .testPage{
+    height:5000px
+  }
 </style>
