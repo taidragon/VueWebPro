@@ -1,5 +1,8 @@
 # VueDemo
 
-##### 行政区划级联查询组件
-##### cascade
+## 项目地址
+### https://taidragon.github.io/VueDemo/dist/
+
+### 账号：admin
+### 密码：123456
 
