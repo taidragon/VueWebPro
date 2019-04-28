@@ -43,14 +43,6 @@ export default new Router({
           meta: {
             title: '级联查询'
           }
-        },
-        {
-          path: '/verificationCode',
-          name: 'verificationCode',
-          component: () => import('../views/VerificationCode/VerificationCode.vue'),
-          meta: {
-            title: '验证码'
-          }
         }
       ]
     },

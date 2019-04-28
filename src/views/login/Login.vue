@@ -35,12 +35,7 @@
 </template>
 
 <script>
-import service from '@/utils/request'
-import Cookies from 'js-cookie'
-import { login } from '@/api/login'
-import { getToken } from '@/utils/auth'
 import Codetest from './Codetest'
-
 export default {
   name: 'Login',
   data () {
@@ -77,17 +72,6 @@ export default {
     Codetest
   },
   methods: {
-    /* 获取token的方法 */
-    getToken () {
-      service({
-        url: '/getToken',
-        method: 'post'
-      }).then(res => {
-        if (res.data.code === '0000') {
-          Cookies.set('token', res.data.accessToken)
-        }
-      })
-    },
     getCodetest (identifyCode) {
       this.loginData.verificationCode = identifyCode
     },
@@ -95,27 +79,22 @@ export default {
     handleSubmit () {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          login({
-            accessToken: getToken(),
-            validate: true,
-            data: {
-              username: this.loginData.username,
-              password: this.loginData.password,
-              type: 0
+          this.$refs.codetest.refreshCode()
+          if (this.loginData.username === 'admin' && this.loginData.password === '123456') {
+            // 用户信息
+            let msg = {
+              name: 'admin',
+              code: '110000'
             }
-          }).then(res => {
-            console.log(res)
-            /* 修改验证码 */
-            this.$refs.codetest.refreshCode()
-            if (res.data.code === '0000') {
-              this.$store.commit('setloginInfor', res.data.data.codeMsg)
-              // 保存到session里面
-              sessionStorage.setItem('loginInfo', JSON.stringify(res.data.data.codeMsg))
-              this.$router.push({ name: 'dataCenter' })
-            } else {
-              this.$Message.info(res.data.msg)
-            }
-          })
+            // 将登陆用户信息保存到state
+            this.$store.commit('setloginInfor', msg)
+            // 将登陆用户信息保存到session里面
+            sessionStorage.setItem('loginInfo', JSON.stringify(msg))
+            // 跳转到首页
+            this.$router.push({ name: 'testPage' })
+          } else {
+            this.$Message.info('账号或密码错误')
+          }
         }
       })
     }
@@ -132,7 +111,7 @@ export default {
 #body{
   width:100%;
   height:100%;
-  background: #fff no-repeat center center;
+  background: url("../../assets/loginBack.jpg") no-repeat center center;
   background-size: 100% 100%;
   display:flex;
   justify-content:center;
@@ -140,8 +119,8 @@ export default {
 }
   /*中部内容的样式*/
 #content{
-  width:40%;
-  min-width: 700px;
+  width:20%;
+  min-width: 500px;
   text-align: center;
   img{
     width:95%;
@@ -150,14 +129,15 @@ export default {
   /* 登录输入框的样式 */
   .login-box{
     width: 100%;
-    height:400px;
-    padding: 25px;
+    height:300px;
+    padding: 20px 80px;
     border-radius: 4px;
     margin-top:40px;
-    background:#fff no-repeat;
+    background:rgba(255,255,255,0.8);
+    border: 1px solid #ccc;
     background-size: 100% 100%;
     .login-box-left{
-      width:50%;
+      width:100%;
       padding:0 20px;
       text-align: center;
       h3{
