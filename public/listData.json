@@ -1,0 +1,12 @@
+[{
+  "icon": "ios-analytics",
+  "text": "组件",
+  "id": "1",
+  "children": [
+    {
+      "text": "TableTree",
+      "id": "1-1",
+      "url": ""
+    }
+  ]
+}]
